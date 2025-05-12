@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Gestão de Documentos</title>
+    <style>
+        body {
+            background: url('img/fundo-login.jpg') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .login-container {
+            background-color: rgba(255, 255, 255, 0.92);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            backdrop-filter: blur(2px);
+        }
+
+        .login-container h1 {
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 24px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .login-container img.logo {
+            max-width: 180px;
+            margin-bottom: 25px;
+            filter: drop-shadow(1px 1px 3px rgba(0,0,0,0.2));
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #34495e;
+            font-weight: 600;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: border 0.3s;
+        }
+
+        .input-group input:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        button.login-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            width: 100%;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        button.login-btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .footer {
+            margin-top: 25px;
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            margin-top: 15px;
+            font-size: 14px;
+            display: none;
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 30px 20px;
+                margin: 20px;
+                width: calc(100% - 40px);
+            }
+            
+            .login-container h1 {
+                font-size: 20px;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <img src="img/logo.png" alt="Logo" class="logo">
+        <h1>Sistema de Gestão de Documentos</h1>
+        
+        <form id="loginForm">
+            <div class="input-group">
+                <label for="username">Usuário</label>
+                <input type="text" id="username" required autofocus>
+            </div>
+            
+            <div class="input-group">
+                <label for="password">Senha</label>
+                <input type="password" id="password" required>
+            </div>
+            
+            <div id="errorMessage" class="error-message">
+                Usuário ou senha incorretos!
+            </div>
+            
+            <button type="submit" class="login-btn">Entrar</button>
+        </form>
+        
+        <div class="footer">
+            © 2023 Gestão de Documentos - Versão 1.0
+        </div>
+    </div>
+
+    <script>
+        // USUÁRIOS CADASTRADOS - ADICIONE SEUS USUÁRIOS AQUI
+        const USUARIOS = [
+            { usuario: "admin", senha: "admin123", nome: "Administrador" },
+            { usuario: "engenheiro", senha: "eng123", nome: "Engenheiro Orzinei" }
+        ];
+
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            const errorElement = document.getElementById('errorMessage');
+            
+            const usuarioValido = USUARIOS.find(user => 
+                user.usuario === username && user.senha === password
+            );
+            
+            if (usuarioValido) {
+                sessionStorage.setItem('usuarioLogado', JSON.stringify({
+                    nome: usuarioValido.nome,
+                    usuario: usuarioValido.usuario,
+                    horaLogin: new Date().toISOString()
+                }));
+                
+                window.location.href = 'sistema.html';
+            } else {
+                errorElement.style.display = 'block';
+                document.getElementById('password').value = '';
+                document.getElementById('password').focus();
+            }
+        });
+    </script>
+</body>
+</html>
